@@ -10,11 +10,11 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
+use Mhmadahmd\FilamentSaas\Commands\FilamentSaasCommand;
+use Mhmadahmd\FilamentSaas\Testing\TestsFilamentSaas;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Mhmadahmd\FilamentSaas\Commands\FilamentSaasCommand;
-use Mhmadahmd\FilamentSaas\Testing\TestsFilamentSaas;
 
 class FilamentSaasServiceProvider extends PackageServiceProvider
 {

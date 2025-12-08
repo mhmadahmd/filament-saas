@@ -146,7 +146,10 @@ class FilamentSaasServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_filament-saas_table',
+            'create_plan_features_table',
+            'create_plan_subscription_usage_table',
+            'create_plan_subscriptions_table',
+            'create_plans_table',
         ];
     }
 }

@@ -9,4 +9,3 @@ class CreateFeature extends CreateRecord
 {
     protected static string $resource = FeatureResource::class;
 }
-

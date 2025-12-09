@@ -2,6 +2,7 @@
 
 namespace Mhmadahmd\FilamentSaas\Resources;
 
+use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -9,7 +10,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Mhmadahmd\FilamentSaas\Models\Feature;
 use Mhmadahmd\FilamentSaas\Resources\FeatureResource\Pages;
-use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 
 class FeatureResource extends Resource
 {
@@ -112,8 +112,8 @@ class FeatureResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('resettable_period')
                     ->label('Resettable')
-                    ->formatStateUsing(fn ($record) => $record->resettable_period > 0 
-                        ? $record->resettable_period . ' ' . $record->resettable_interval 
+                    ->formatStateUsing(fn ($record) => $record->resettable_period > 0
+                        ? $record->resettable_period . ' ' . $record->resettable_interval
                         : 'Never')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -151,4 +151,3 @@ class FeatureResource extends Resource
         ];
     }
 }
-

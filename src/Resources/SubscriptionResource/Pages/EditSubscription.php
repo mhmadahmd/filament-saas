@@ -17,4 +17,3 @@ class EditSubscription extends EditRecord
         ];
     }
 }
-

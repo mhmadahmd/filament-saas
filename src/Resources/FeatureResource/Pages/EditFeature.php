@@ -17,4 +17,3 @@ class EditFeature extends EditRecord
         ];
     }
 }
-

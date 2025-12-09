@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug');
             $table->json('description')->nullable();
             $table->string('value');
-            
+
             $table->unique(['plan_id', 'slug']);
             $table->unsignedSmallInteger('resettable_period')->default(0);
             $table->string('resettable_interval')->default('month');

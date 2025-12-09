@@ -2,6 +2,7 @@
 
 namespace Mhmadahmd\FilamentSaas\Resources;
 
+use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -10,7 +11,6 @@ use Filament\Tables\Table;
 use Mhmadahmd\FilamentSaas\Resources\PlanResource\RelationManagers;
 use Mhmadahmd\FilamentSaas\Models\Plan;
 use Mhmadahmd\FilamentSaas\Resources\PlanResource\Pages;
-use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 
 class PlanResource extends Resource
 {
@@ -221,4 +221,3 @@ class PlanResource extends Resource
         ];
     }
 }
-

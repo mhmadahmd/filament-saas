@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use LogicException;
 use Mhmadahmd\FilamentSaas\Services\Period;
 use Mhmadahmd\FilamentSaas\Traits\BelongsToPlan;
 use Mhmadahmd\FilamentSaas\Traits\HasSlug;
 use Mhmadahmd\FilamentSaas\Traits\HasTranslations;
-use LogicException;
 use Spatie\Sluggable\SlugOptions;
 
 /**

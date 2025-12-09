@@ -2,15 +2,15 @@
 
 namespace Mhmadahmd\FilamentSaas\Resources;
 
+use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Mhmadahmd\FilamentSaas\Models\Subscription;
 use Mhmadahmd\FilamentSaas\Resources\SubscriptionResource\Pages;
-use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
-use Illuminate\Database\Eloquent\Builder;
 
 class SubscriptionResource extends Resource
 {
@@ -71,15 +71,16 @@ class SubscriptionResource extends Resource
                             ->label('Subscriber')
                             ->options(function (Forms\Get $get) {
                                 $type = $get('subscriber_type');
-                                if (!$type) {
+                                if (! $type) {
                                     return [];
                                 }
+
                                 return $type::pluck('name', 'id')->toArray();
                             })
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->visible(fn (Forms\Get $get) => !empty($get('subscriber_type'))),
+                            ->visible(fn (Forms\Get $get) => ! empty($get('subscriber_type'))),
                     ])
                     ->columns(2),
 
@@ -195,4 +196,3 @@ class SubscriptionResource extends Resource
         ];
     }
 }
-

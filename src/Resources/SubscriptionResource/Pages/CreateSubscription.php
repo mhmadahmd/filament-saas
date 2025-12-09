@@ -9,4 +9,3 @@ class CreateSubscription extends CreateRecord
 {
     protected static string $resource = SubscriptionResource::class;
 }
-

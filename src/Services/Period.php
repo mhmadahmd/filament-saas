@@ -8,9 +8,9 @@ use Carbon\Carbon;
 
 final class Period
 {
-    private Carbon|string $start;
+    private Carbon | string $start;
 
-    private Carbon|string $end;
+    private Carbon | string $end;
 
     private string $interval;
 

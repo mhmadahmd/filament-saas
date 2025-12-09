@@ -10,11 +10,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(config('laravel-subscriptions.tables.subscription_usage'), function (Blueprint $table): void {
+        Schema::create('subscription_usage', function (Blueprint $table): void {
             $table->id();
 
-            $table->foreignIdFor(config('laravel-subscriptions.models.subscription'));
-            $table->foreignIdFor(config('laravel-subscriptions.models.feature'));
+            $table->foreignId('subscription_id')->constrained('subscriptions')->cascadeOnDelete();
+            $table->foreignId('feature_id')->constrained('features')->cascadeOnDelete();
             $table->unsignedSmallInteger('used');
             $table->string('timezone')->nullable();
 
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('laravel-subscriptions.tables.subscription_usage'));
+        Schema::dropIfExists('subscription_usage');
     }
 };

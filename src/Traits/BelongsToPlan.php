@@ -12,7 +12,7 @@ trait BelongsToPlan
 {
     public function plan(): BelongsTo
     {
-        return $this->belongsTo(config('saas.models.plan', Plan::class), 'plan_id', 'id', 'plan');
+        return $this->belongsTo(Plan::class, 'plan_id', 'id', 'plan');
     }
 
     public function scopeByPlanId(Builder $builder, int $planId): Builder

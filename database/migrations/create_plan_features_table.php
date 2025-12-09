@@ -10,10 +10,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(config('laravel-subscriptions.tables.features'), function (Blueprint $table): void {
+        Schema::create('features', function (Blueprint $table): void {
             $table->id();
 
-            $table->foreignIdFor(config('laravel-subscriptions.models.plan'));
+            $table->foreignId('plan_id')->constrained('plans')->cascadeOnDelete();
             $table->json('name');
             $table->string('slug');
             $table->json('description')->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('laravel-subscriptions.tables.features'));
+        Schema::dropIfExists('features');
     }
 };

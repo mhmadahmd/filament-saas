@@ -91,11 +91,6 @@ class Feature extends Model implements Sortable
         'order_column_name' => 'sort_order',
     ];
 
-    public function getTable(): string
-    {
-        return config('saas.tables.features', 'features');
-    }
-
     protected static function boot(): void
     {
         parent::boot();
@@ -122,7 +117,7 @@ class Feature extends Model implements Sortable
 
     public function usages(): HasMany
     {
-        return $this->hasMany(config('saas.models.subscription_usage'));
+        return $this->hasMany(SubscriptionUsage::class);
     }
 
     public function getResetDate(?Carbon $dateFrom = null): Carbon

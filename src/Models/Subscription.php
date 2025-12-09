@@ -102,11 +102,6 @@ class Subscription extends Model
         'description',
     ];
 
-    public function getTable()
-    {
-        return config('saas.tables.subscriptions');
-    }
-
     protected static function boot(): void
     {
         parent::boot();
@@ -137,7 +132,7 @@ class Subscription extends Model
 
     public function usage(): HasMany
     {
-        return $this->hasMany(config('saas.models.subscription_usage'));
+        return $this->hasMany(SubscriptionUsage::class);
     }
 
     public function active(): bool

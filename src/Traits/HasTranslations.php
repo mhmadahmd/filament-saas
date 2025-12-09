@@ -14,62 +14,62 @@ trait HasTranslations
 {
     use BaseHasTranslations;
 
-    public function getAttributeValue(mixed $key): mixed
-    {
-        if (! $this->isTranslatableAttribute($key)) {
-            return parent::getAttributeValue($key);
-        }
+    // public function getAttributeValue(mixed $key): mixed
+    // {
+    //     if (! $this->isTranslatableAttribute($key)) {
+    //         return parent::getAttributeValue($key);
+    //     }
 
-        return $this->getTranslation($key, config('app.locale')) ?: Arr::first($this->getTranslations($key));
-    }
+    //     return $this->getTranslation($key, config('app.locale')) ?: Arr::first($this->getTranslations($key));
+    // }
 
-    /**
-     * @throws AttributeIsNotTranslatable
-     */
-    public function getTranslations(?string $key = null): array
-    {
-        if ($key !== null) {
-            $this->guardAgainstNonTranslatableAttribute($key);
+    // /**
+    //  * @throws AttributeIsNotTranslatable
+    //  */
+    // public function getTranslations(?string $key = null): array
+    // {
+    //     if ($key !== null) {
+    //         $this->guardAgainstNonTranslatableAttribute($key);
 
-            $value = array_filter(
-                json_decode($this->getAttributes()[$key] ?? '' ?: '{}', true) ?: [],
-                fn ($value) => $value !== null && $value !== ''
-            );
+    //         $value = array_filter(
+    //             json_decode($this->getAttributes()[$key] ?? '' ?: '{}', true) ?: [],
+    //             fn ($value) => $value !== null && $value !== ''
+    //         );
 
-            // Inject default translation if none supplied
-            if (! is_array($value)) {
-                $oldValue = $value;
+    //         // Inject default translation if none supplied
+    //         if (! is_array($value)) {
+    //             $oldValue = $value;
 
-                if ($this->hasSetMutator($key)) {
-                    $method = 'set' . Str::studly($key) . 'Attribute';
-                    $value = $this->{$method}($value);
-                }
+    //             if ($this->hasSetMutator($key)) {
+    //                 $method = 'set' . Str::studly($key) . 'Attribute';
+    //                 $value = $this->{$method}($value);
+    //             }
 
-                $value = [$locale = app()->getLocale() => $value];
+    //             $value = [$locale = app()->getLocale() => $value];
 
-                $this->attributes[$key] = $this->asJson($value);
-                event(new TranslationHasBeenSetEvent($this, $key, $locale, $oldValue, $value));
-            }
+    //             $this->attributes[$key] = $this->asJson($value);
+    //             event(new TranslationHasBeenSetEvent($this, $key, $locale, $oldValue, $value));
+    //         }
 
-            return $value;
-        }
+    //         return $value;
+    //     }
 
-        return array_reduce($this->getTranslatableAttributes(), function ($result, $item) {
-            $result[$item] = $this->getTranslations($item);
+    //     return array_reduce($this->getTranslatableAttributes(), function ($result, $item) {
+    //         $result[$item] = $this->getTranslations($item);
 
-            return $result;
-        });
-    }
+    //         return $result;
+    //     });
+    // }
 
-    public function attributesToArray(): array
-    {
-        $values = array_map(fn ($attribute) => $this->getTranslation($attribute, config('app.locale')) ?: null, $keys = $this->getTranslatableAttributes());
+    // public function attributesToArray(): array
+    // {
+    //     $values = array_map(fn ($attribute) => $this->getTranslation($attribute, config('app.locale')) ?: null, $keys = $this->getTranslatableAttributes());
 
-        return array_replace(parent::attributesToArray(), array_combine($keys, $values));
-    }
+    //     return array_replace(parent::attributesToArray(), array_combine($keys, $values));
+    // }
 
-    public function mergeTranslatable(array $translatable): void
-    {
-        $this->translatable = array_merge($this->translatable, $translatable);
-    }
+    // public function mergeTranslatable(array $translatable): void
+    // {
+    //     $this->translatable = array_merge($this->translatable, $translatable);
+    // }
 }

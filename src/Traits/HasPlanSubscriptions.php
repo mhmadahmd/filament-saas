@@ -26,7 +26,7 @@ trait HasPlanSubscriptions
     public function planSubscriptions(): MorphMany
     {
         return $this->morphMany(
-            related: config('saas.models.subscription', Subscription::class),
+            related: Subscription::class,
             name: 'subscriber',
             type: 'subscriber_type',
             id: 'subscriber_id'
@@ -50,7 +50,7 @@ trait HasPlanSubscriptions
             ->pluck('plan_id')
             ->unique();
 
-        return tap(new (config('saas.models.plan', Plan::class)))->whereIn('id', $planIds)->get();
+        return tap(new (Plan::class))->whereIn('id', $planIds)->get();
     }
 
     public function subscribedTo(int $planId): bool

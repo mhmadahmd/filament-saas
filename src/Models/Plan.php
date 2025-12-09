@@ -114,11 +114,6 @@ class Plan extends Model implements Sortable
         'order_column_name' => 'sort_order',
     ];
 
-    public function getTable(): string
-    {
-        return config('saas.tables.plans');
-    }
-
     protected static function boot(): void
     {
         parent::boot();
@@ -140,12 +135,12 @@ class Plan extends Model implements Sortable
 
     public function features(): HasMany
     {
-        return $this->hasMany(config('saas.models.feature'));
+        return $this->hasMany(Feature::class);
     }
 
     public function subscriptions(): HasMany
     {
-        return $this->hasMany(config('saas.models.subscription'));
+        return $this->hasMany(Subscription::class);
     }
 
     public function isFree(): bool

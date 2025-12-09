@@ -49,25 +49,19 @@ class SubscriptionUsage extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function getTable(): string
-    {
-        return config('saas.tables.subscription_usage');
-    }
-
     public function feature(): BelongsTo
     {
-        return $this->belongsTo(config('saas.models.feature'), 'feature_id', 'id', 'feature');
+        return $this->belongsTo(Feature::class, 'feature_id', 'id', 'feature');
     }
 
     public function subscription(): BelongsTo
     {
-        return $this->belongsTo(config('saas.models.subscription'), 'subscription_id', 'id', 'subscription');
+        return $this->belongsTo(Subscription::class, 'subscription_id', 'id', 'subscription');
     }
 
     public function scopeByFeatureSlug(Builder $builder, string $featureSlug, int $planId): Builder
     {
-        $model = config('saas.models.feature', Feature::class);
-        $feature = $model::where('plan_id', $planId)->where('slug', $featureSlug)->first();
+        $feature = Feature::query()->where('plan_id', $planId)->where('slug', $featureSlug)->first();
 
         return $builder->where('feature_id', $feature ? $feature->getKey() : null);
     }

@@ -9,6 +9,7 @@ use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -39,7 +40,7 @@ class FilamentSaasServiceProvider extends PackageServiceProvider
                     ->askToStarRepoOnGitHub('mhmadahmd/filament-saas');
             });
 
-        $configFileName = $package->shortName();
+        $configFileName = $this->shortName();
 
         if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
             $package->hasConfigFile();
@@ -146,10 +147,15 @@ class FilamentSaasServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_plan_features_table',
-            'create_plan_subscription_usage_table',
-            'create_plan_subscriptions_table',
             'create_plans_table',
+            'create_plan_features_table',
+            'create_plan_subscriptions_table',
+            'create_plan_subscription_usage_table',
         ];
+    }
+
+    protected function shortName(): string
+    {
+        return Str::after(static::$name, 'filament-');
     }
 }

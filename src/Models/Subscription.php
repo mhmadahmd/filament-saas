@@ -305,6 +305,10 @@ class Subscription extends Model
     {
         $feature = $this->plan->features()->where('slug', $featureSlug)->first();
 
+        if ($feature === null) {
+            throw new LogicException("Feature with slug '{$featureSlug}' not found in plan.");
+        }
+
         $usage = $this->usage()->firstOrNew([
             'subscription_id' => $this->getKey(),
             'feature_id' => $feature->getKey(),
@@ -383,13 +387,25 @@ class Subscription extends Model
      */
     public function getFeatureRemainings(string $featureSlug): int
     {
-        return $this->getFeatureValue($featureSlug) - $this->getFeatureUsage($featureSlug);
+        $featureValue = $this->getFeatureValue($featureSlug);
+
+        if ($featureValue === null || $featureValue === 'unlimited' || $featureValue === 'true') {
+            return PHP_INT_MAX;
+        }
+
+        if ($featureValue === 'false' || $featureValue === '0') {
+            return 0;
+        }
+
+        $value = (int) $featureValue;
+
+        return max(0, $value - $this->getFeatureUsage($featureSlug));
     }
 
     public function getFeatureValue(string $featureSlug): ?string
     {
         $feature = $this->plan->features()->where('slug', $featureSlug)->first();
 
-        return $feature->value ?? null;
+        return $feature?->value;
     }
 }

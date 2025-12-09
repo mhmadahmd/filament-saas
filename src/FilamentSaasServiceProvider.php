@@ -86,6 +86,18 @@ class FilamentSaasServiceProvider extends PackageServiceProvider
             }
         }
 
+        // Handle Seeders
+        if (app()->runningInConsole()) {
+            $seederPath = __DIR__ . '/../database/seeders';
+            if (file_exists($seederPath)) {
+                foreach (app(Filesystem::class)->files($seederPath) as $file) {
+                    $this->publishes([
+                        $file->getRealPath() => database_path("seeders/{$file->getFilename()}"),
+                    ], 'filament-saas-seeders');
+                }
+            }
+        }
+
         // Testing
         Testable::mixin(new TestsFilamentSaas);
     }

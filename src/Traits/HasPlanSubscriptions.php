@@ -13,7 +13,7 @@ use Mhmadahmd\FilamentSaas\Services\Period;
 
 trait HasPlanSubscriptions
 {
-    protected static function bootHasSubscriptions(): void
+    protected static function bootHasPlanSubscriptions(): void
     {
         static::deleted(function ($plan): void {
             $plan->subscriptions()->delete();

@@ -36,6 +36,8 @@ class SubscriptionUsage extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'subscription_usage';
+
     protected $fillable = [
         'subscription_id',
         'feature_id',

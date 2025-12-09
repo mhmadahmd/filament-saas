@@ -8,9 +8,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Mhmadahmd\FilamentSaas\Resources\PlanResource\RelationManagers;
 use Mhmadahmd\FilamentSaas\Models\Plan;
 use Mhmadahmd\FilamentSaas\Resources\PlanResource\Pages;
+use Mhmadahmd\FilamentSaas\Resources\PlanResource\RelationManagers;
 
 class PlanResource extends Resource
 {

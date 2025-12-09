@@ -35,6 +35,8 @@ use Spatie\Sluggable\SlugOptions;
  * @property Carbon|null $deleted_at
  * @property-read Plan $plan
  * @property-read \Illuminate\Database\Eloquent\Collection|\Mhmadahmd\FilamentSaas\Models\SubscriptionUsage[] $usage
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Mhmadahmd\FilamentSaas\Models\SubscriptionPayment[] $payments
+ * @property-read SubscriptionPayment|null $latestPayment
  * @property-read Model $subscriber
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription byPlanId($planId)
@@ -133,6 +135,16 @@ class Subscription extends Model
     public function usage(): HasMany
     {
         return $this->hasMany(SubscriptionUsage::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(SubscriptionPayment::class);
+    }
+
+    public function latestPayment(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(SubscriptionPayment::class)->latestOfMany();
     }
 
     public function active(): bool

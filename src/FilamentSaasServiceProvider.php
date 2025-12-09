@@ -163,6 +163,7 @@ class FilamentSaasServiceProvider extends PackageServiceProvider
             'create_plan_features_table',
             'create_plan_subscriptions_table',
             'create_plan_subscription_usage_table',
+            'create_subscription_payments_table',
         ];
     }
 

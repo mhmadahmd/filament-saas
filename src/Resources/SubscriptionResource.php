@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Mhmadahmd\FilamentSaas\Models\Subscription;
 use Mhmadahmd\FilamentSaas\Resources\SubscriptionResource\Pages;
+use Mhmadahmd\FilamentSaas\Resources\SubscriptionResource\RelationManagers;
 
 class SubscriptionResource extends Resource
 {
@@ -35,7 +36,18 @@ class SubscriptionResource extends Resource
                             ->relationship('plan', 'name')
                             ->searchable()
                             ->preload()
-                            ->required(),
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                if ($state) {
+                                    $plan = \Mhmadahmd\FilamentSaas\Models\Plan::find($state);
+                                    if ($plan) {
+                                        $totalAmount = $plan->price + $plan->signup_fee;
+                                        $set('payment_amount', $totalAmount);
+                                        $set('payment_currency', $plan->currency);
+                                    }
+                                }
+                            }),
                         TranslatableTabs::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
@@ -99,7 +111,69 @@ class SubscriptionResource extends Resource
                         Forms\Components\DateTimePicker::make('canceled_at')
                             ->label('Canceled At'),
                     ])
-                    ->columns(2),
+                    ->columns(2)
+                    ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
+
+                Forms\Components\Section::make('Payment Information')
+                    ->schema([
+                        Forms\Components\Select::make('payment_method')
+                            ->label('Payment Method')
+                            ->options(\Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::getPaymentMethods())
+                            ->required()
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, Forms\Set $set, Forms\Get $get) {
+                                if ($state === \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_ONLINE) {
+                                    $set('payment_status', \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PENDING);
+                                } elseif ($state === \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_CASH) {
+                                    $set('payment_status', \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PAID);
+                                } else {
+                                    $set('payment_status', \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PENDING);
+                                }
+                            })
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
+                        Forms\Components\Select::make('payment_status')
+                            ->label('Payment Status')
+                            ->options(\Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::getStatuses())
+                            ->default(\Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PENDING)
+                            ->required()
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
+                        Forms\Components\TextInput::make('payment_amount')
+                            ->label('Payment Amount')
+                            ->numeric()
+                            ->required()
+                            ->prefix(fn (Forms\Get $get) => $get('payment_currency') ?? 'USD')
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
+                        Forms\Components\TextInput::make('payment_currency')
+                            ->label('Payment Currency')
+                            ->default('USD')
+                            ->maxLength(3)
+                            ->required()
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
+                        Forms\Components\TextInput::make('transaction_id')
+                            ->label('Transaction ID')
+                            ->maxLength(255)
+                            ->visible(fn (Forms\Get $get, $livewire) => 
+                                $livewire instanceof \Filament\Resources\Pages\CreateRecord 
+                                && $get('payment_method') === \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_ONLINE
+                            ),
+                        Forms\Components\TextInput::make('reference_number')
+                            ->label('Reference Number')
+                            ->maxLength(255)
+                            ->visible(fn (Forms\Get $get, $livewire) => 
+                                $livewire instanceof \Filament\Resources\Pages\CreateRecord 
+                                && in_array($get('payment_method'), [
+                                    \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_BANK_TRANSFER,
+                                    \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_CASH
+                                ])
+                            ),
+                        Forms\Components\Textarea::make('payment_notes')
+                            ->label('Payment Notes')
+                            ->rows(2)
+                            ->columnSpanFull()
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
+                    ])
+                    ->columns(2)
+                    ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
             ]);
     }
 
@@ -144,6 +218,21 @@ class SubscriptionResource extends Resource
                     ->label('Ends At')
                     ->dateTime()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('payments_count')
+                    ->label('Payments')
+                    ->counts('payments')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('latestPayment.status')
+                    ->label('Payment Status')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => $state ? \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::getStatuses()[$state] ?? $state : 'N/A')
+                    ->color(fn ($state) => match ($state) {
+                        \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PAID => 'success',
+                        \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PENDING => 'warning',
+                        \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_FAILED => 'danger',
+                        default => 'gray',
+                    })
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -185,6 +274,13 @@ class SubscriptionResource extends Resource
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\PaymentsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

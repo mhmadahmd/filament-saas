@@ -158,6 +158,11 @@ class Plan extends Model implements Sortable
         return $this->grace_period && $this->grace_interval;
     }
 
+    public function isPaidInFull(): bool
+    {
+        return $this->invoice_period === 0;
+    }
+
     public function getFeatureBySlug(string $featureSlug): ?Feature
     {
         return $this->features()->where('slug', $featureSlug)->first();

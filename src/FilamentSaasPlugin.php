@@ -5,6 +5,7 @@ namespace Mhmadahmd\FilamentSaas;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Mhmadahmd\FilamentSaas\Resources\FeatureResource;
+use Mhmadahmd\FilamentSaas\Resources\SubscriptionPaymentResource;
 use Mhmadahmd\FilamentSaas\Resources\PlanResource;
 use Mhmadahmd\FilamentSaas\Resources\SubscriptionResource;
 
@@ -21,6 +22,7 @@ class FilamentSaasPlugin implements Plugin
             ->resources([
                 PlanResource::class,
                 SubscriptionResource::class,
+                SubscriptionPaymentResource::class,
                 FeatureResource::class,
             ]);
     }

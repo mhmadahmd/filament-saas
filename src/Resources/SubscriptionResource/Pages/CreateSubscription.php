@@ -25,9 +25,23 @@ class CreateSubscription extends CreateRecord
         ];
 
         $this->paymentData = $paymentData;
+        
+        $name = $data['name'] ?? 'main';
+        if (is_array($name)) {
+            $name = ! empty($name) ? (string) reset($name) : 'main';
+        }
+        $name = (string) $name;
+        
+        $description = $data['description'] ?? null;
+        if (is_array($description) && ! empty($description)) {
+            $description = $description;
+        } elseif (is_array($description) && empty($description)) {
+            $description = null;
+        }
+        
         $this->subscriptionData = [
-            'name' => $data['name'] ?? 'main',
-            'description' => $data['description'] ?? null,
+            'name' => $name,
+            'description' => $description,
             'subscriber_type' => $data['subscriber_type'],
             'subscriber_id' => $data['subscriber_id'],
             'plan_id' => $data['plan_id'],

@@ -87,18 +87,17 @@ class PaymentsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('payment_method')
                     ->label('Payment Method')
                     ->badge()
-                    ->formatStateUsing(fn ($state) => SubscriptionPayment::getPaymentMethods()[$state] ?? $state)
                     ->color(fn ($state) => match ($state) {
                         SubscriptionPayment::METHOD_CASH => 'success',
                         SubscriptionPayment::METHOD_BANK_TRANSFER => 'info',
                         SubscriptionPayment::METHOD_ONLINE => 'warning',
                         default => 'gray',
                     })
+                    ->formatStateUsing(fn ($state) => SubscriptionPayment::getPaymentMethods()[$state] ?? $state)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn ($state) => SubscriptionPayment::getStatuses()[$state] ?? $state)
                     ->color(fn ($state) => match ($state) {
                         SubscriptionPayment::STATUS_PAID => 'success',
                         SubscriptionPayment::STATUS_PENDING => 'warning',
@@ -106,6 +105,7 @@ class PaymentsRelationManager extends RelationManager
                         SubscriptionPayment::STATUS_REFUNDED => 'gray',
                         default => 'primary',
                     })
+                    ->formatStateUsing(fn ($state) => SubscriptionPayment::getStatuses()[$state] ?? $state)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction_id')
                     ->label('Transaction ID')

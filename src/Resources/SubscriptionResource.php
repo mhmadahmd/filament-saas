@@ -52,20 +52,27 @@ class SubscriptionResource extends Resource
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->label('Subscription Name')
+                                    ->default('main')
                                     ->required()
                                     ->maxLength(255)
+                                    ->helperText('The subscription title (e.g., "main" or "primary")')
                                     ->columnSpanFull(),
                                 Forms\Components\Textarea::make('description')
                                     ->label('Description')
                                     ->rows(3)
                                     ->columnSpanFull(),
                             ]),
+                        Forms\Components\DateTimePicker::make('starts_at')
+                            ->label('Start Date')
+                            ->helperText('Optional. If not provided, subscription will start now. Trial and period dates will be calculated automatically based on the plan.')
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord),
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug')
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
                             ->disabled()
-                            ->dehydrated(),
+                            ->dehydrated()
+                            ->visible(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\EditRecord),
                     ])
                     ->columns(2),
 
@@ -225,13 +232,13 @@ class SubscriptionResource extends Resource
                 Tables\Columns\TextColumn::make('latestPayment.status')
                     ->label('Payment Status')
                     ->badge()
-                    ->formatStateUsing(fn ($state) => $state ? \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::getStatuses()[$state] ?? $state : 'N/A')
                     ->color(fn ($state) => match ($state) {
                         \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PAID => 'success',
                         \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_PENDING => 'warning',
                         \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_FAILED => 'danger',
                         default => 'gray',
                     })
+                    ->formatStateUsing(fn ($state) => $state ? \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::getStatuses()[$state] ?? $state : 'N/A')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

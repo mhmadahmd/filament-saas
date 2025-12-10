@@ -78,7 +78,7 @@ class PaymentsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('transaction_id')
+            ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Amount')

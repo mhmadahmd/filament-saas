@@ -8,6 +8,10 @@ use Mhmadahmd\FilamentSaas\Resources\FeatureResource;
 use Mhmadahmd\FilamentSaas\Resources\SubscriptionPaymentResource;
 use Mhmadahmd\FilamentSaas\Resources\PlanResource;
 use Mhmadahmd\FilamentSaas\Resources\SubscriptionResource;
+use Mhmadahmd\FilamentSaas\Widgets\PaymentMethodDistributionWidget;
+use Mhmadahmd\FilamentSaas\Widgets\PaymentStatusOverviewWidget;
+use Mhmadahmd\FilamentSaas\Widgets\RevenueStatisticsWidget;
+use Mhmadahmd\FilamentSaas\Widgets\UpcomingRenewalsWidget;
 
 class FilamentSaasPlugin implements Plugin
 {
@@ -24,6 +28,12 @@ class FilamentSaasPlugin implements Plugin
                 SubscriptionResource::class,
                 SubscriptionPaymentResource::class,
                 FeatureResource::class,
+            ])
+            ->widgets([
+                RevenueStatisticsWidget::class,
+                PaymentStatusOverviewWidget::class,
+                UpcomingRenewalsWidget::class,
+                PaymentMethodDistributionWidget::class,
             ]);
     }
 

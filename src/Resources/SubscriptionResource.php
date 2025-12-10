@@ -159,16 +159,14 @@ class SubscriptionResource extends Resource
                         Forms\Components\TextInput::make('transaction_id')
                             ->label('Transaction ID')
                             ->maxLength(255)
-                            ->visible(fn (Forms\Get $get, $livewire) => 
-                                $livewire instanceof \Filament\Resources\Pages\CreateRecord 
-                                && $get('payment_method') === \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_ONLINE
+                            ->visible(fn (Forms\Get $get) => 
+                                $get('payment_method') === \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_ONLINE
                             ),
                         Forms\Components\TextInput::make('reference_number')
                             ->label('Reference Number')
                             ->maxLength(255)
-                            ->visible(fn (Forms\Get $get, $livewire) => 
-                                $livewire instanceof \Filament\Resources\Pages\CreateRecord 
-                                && in_array($get('payment_method'), [
+                            ->visible(fn (Forms\Get $get) => 
+                                in_array($get('payment_method'), [
                                     \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_BANK_TRANSFER,
                                     \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_CASH
                                 ])
@@ -187,6 +185,7 @@ class SubscriptionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->with('latestPayment'))
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Subscription')

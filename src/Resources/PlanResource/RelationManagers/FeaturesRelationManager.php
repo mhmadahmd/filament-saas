@@ -2,12 +2,12 @@
 
 namespace Mhmadahmd\FilamentSaas\Resources\PlanResource\RelationManagers;
 
+use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use AbdulmajeedJamaan\FilamentTranslatableTabs\TranslatableTabs;
 
 class FeaturesRelationManager extends RelationManager
 {
@@ -97,8 +97,8 @@ class FeaturesRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('resettable_period')
                     ->label('Resettable')
-                    ->formatStateUsing(fn ($record) => $record->resettable_period > 0 
-                        ? $record->resettable_period . ' ' . $record->resettable_interval 
+                    ->formatStateUsing(fn ($record) => $record->resettable_period > 0
+                        ? $record->resettable_period . ' ' . $record->resettable_interval
                         : 'Never')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sort_order')
@@ -132,4 +132,3 @@ class FeaturesRelationManager extends RelationManager
             ->reorderable('sort_order');
     }
 }
-

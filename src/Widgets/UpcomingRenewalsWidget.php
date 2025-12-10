@@ -2,11 +2,11 @@
 
 namespace Mhmadahmd\FilamentSaas\Widgets;
 
+use Carbon\Carbon;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Mhmadahmd\FilamentSaas\Models\Subscription;
-use Carbon\Carbon;
 
 class UpcomingRenewalsWidget extends BaseWidget
 {
@@ -54,6 +54,7 @@ class UpcomingRenewalsWidget extends BaseWidget
                     ->label('Days Left')
                     ->getStateUsing(function ($record) {
                         $days = Carbon::now()->diffInDays($record->ends_at, false);
+
                         return $days > 0 ? $days . ' days' : 'Expired';
                     })
                     ->badge()
@@ -71,8 +72,9 @@ class UpcomingRenewalsWidget extends BaseWidget
                         \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::STATUS_FAILED => 'danger',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn ($state) => $state 
-                        ? \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::getStatuses()[$state] ?? $state 
+                    ->formatStateUsing(
+                        fn ($state) => $state
+                        ? \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::getStatuses()[$state] ?? $state
                         : 'N/A'
                     )
                     ->toggleable(),
@@ -82,4 +84,3 @@ class UpcomingRenewalsWidget extends BaseWidget
             ->heading('Subscriptions Renewing in the Next 7 Days');
     }
 }
-

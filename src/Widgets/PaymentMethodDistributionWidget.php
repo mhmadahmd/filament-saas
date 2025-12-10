@@ -94,4 +94,3 @@ class PaymentMethodDistributionWidget extends ChartWidget
         };
     }
 }
-

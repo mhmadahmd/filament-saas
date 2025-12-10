@@ -8,7 +8,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Mhmadahmd\FilamentSaas\Models\SubscriptionPayment;
-use Illuminate\Validation\ValidationException;
 
 class PaymentsRelationManager extends RelationManager
 {
@@ -136,4 +135,3 @@ class PaymentsRelationManager extends RelationManager
             ->defaultSort('created_at', 'desc');
     }
 }
-

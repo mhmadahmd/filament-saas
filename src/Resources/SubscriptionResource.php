@@ -159,16 +159,16 @@ class SubscriptionResource extends Resource
                         Forms\Components\TextInput::make('transaction_id')
                             ->label('Transaction ID')
                             ->maxLength(255)
-                            ->visible(fn (Forms\Get $get) => 
-                                $get('payment_method') === \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_ONLINE
+                            ->visible(
+                                fn (Forms\Get $get) => $get('payment_method') === \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_ONLINE
                             ),
                         Forms\Components\TextInput::make('reference_number')
                             ->label('Reference Number')
                             ->maxLength(255)
-                            ->visible(fn (Forms\Get $get) => 
-                                in_array($get('payment_method'), [
+                            ->visible(
+                                fn (Forms\Get $get) => in_array($get('payment_method'), [
                                     \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_BANK_TRANSFER,
-                                    \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_CASH
+                                    \Mhmadahmd\FilamentSaas\Models\SubscriptionPayment::METHOD_CASH,
                                 ])
                             ),
                         Forms\Components\Textarea::make('payment_notes')

@@ -25,20 +25,20 @@ class CreateSubscription extends CreateRecord
         ];
 
         $this->paymentData = $paymentData;
-        
+
         $name = $data['name'] ?? 'main';
         if (is_array($name)) {
             $name = ! empty($name) ? (string) reset($name) : 'main';
         }
         $name = (string) $name;
-        
+
         $description = $data['description'] ?? null;
         if (is_array($description) && ! empty($description)) {
             $description = $description;
         } elseif (is_array($description) && empty($description)) {
             $description = null;
         }
-        
+
         $this->subscriptionData = [
             'name' => $name,
             'description' => $description,
@@ -52,6 +52,7 @@ class CreateSubscription extends CreateRecord
     }
 
     protected array $paymentData = [];
+
     protected array $subscriptionData = [];
 
     protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model

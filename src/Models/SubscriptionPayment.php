@@ -34,12 +34,17 @@ class SubscriptionPayment extends Model
     protected $table = 'subscription_payments';
 
     public const METHOD_CASH = 'cash';
+
     public const METHOD_BANK_TRANSFER = 'bank_transfer';
+
     public const METHOD_ONLINE = 'online';
 
     public const STATUS_PENDING = 'pending';
+
     public const STATUS_PAID = 'paid';
+
     public const STATUS_FAILED = 'failed';
+
     public const STATUS_REFUNDED = 'refunded';
 
     protected $fillable = [
@@ -130,4 +135,3 @@ class SubscriptionPayment extends Model
         ];
     }
 }
-

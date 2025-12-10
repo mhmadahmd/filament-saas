@@ -7,9 +7,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Mhmadahmd\FilamentSaas\Models\SubscriptionPayment;
 use Mhmadahmd\FilamentSaas\Resources\SubscriptionPaymentResource\Pages;
-use Illuminate\Database\Eloquent\Builder;
 
 class SubscriptionPaymentResource extends Resource
 {
@@ -182,7 +182,7 @@ class SubscriptionPaymentResource extends Resource
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->visible(fn ($record) => !$record->isFailed())
+                    ->visible(fn ($record) => ! $record->isFailed())
                     ->action(fn ($record) => $record->markAsFailed()),
             ])
             ->defaultSort('created_at', 'desc');
@@ -196,4 +196,3 @@ class SubscriptionPaymentResource extends Resource
         ];
     }
 }
-

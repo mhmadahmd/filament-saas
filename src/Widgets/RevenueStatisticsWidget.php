@@ -5,7 +5,6 @@ namespace Mhmadahmd\FilamentSaas\Widgets;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Mhmadahmd\FilamentSaas\Models\SubscriptionPayment;
-use Carbon\Carbon;
 
 class RevenueStatisticsWidget extends StatsOverviewWidget
 {
@@ -97,4 +96,3 @@ class RevenueStatisticsWidget extends StatsOverviewWidget
         };
     }
 }
-

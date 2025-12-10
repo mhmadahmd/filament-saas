@@ -70,4 +70,3 @@ class PaymentStatusOverviewWidget extends StatsOverviewWidget
         };
     }
 }
-
